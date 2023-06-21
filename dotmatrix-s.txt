@@ -1,0 +1,59 @@
+CODE SEGMENT 
+    ASSUME CS:CODE,DS:CODE,ES:CODE,SS:CODE
+    
+    PPIC_C EQU 1EH
+    PPIA EQU 18H
+    PPIB EQU 1AH
+    PPIC EQU 1CH
+    
+    ORG 1000H
+    ;MOVING CONTROL WORD TO CONTROL REGISTER
+    
+    MOV AL,80H
+    OUT PPIC_C,AL
+    
+    MOV AL,11111111B
+    OUT PPIA,AL
+    
+    L1: 
+    MOV SI,OFFSET FONT
+    MOV AH,11111110B
+    
+    L2: 
+    MOV AL,BYTE PER CS:[S1]
+    OUT PPIC,AL
+    
+    MOV AL,AH
+    OUT PPIB,AL  
+    
+    CALL TTMER 
+    INC SI
+    
+    CLC
+    
+    ROL AH,1
+    JC L2
+    JMP L1
+    
+    TIMER: MOV CX,300
+    TIMER1: 
+    NOP
+    NOP
+    NOP
+    NOP
+    LOOP TIMER1
+    RET   
+    
+    FONT:
+    DB 00000000B 
+    DB 01001110B
+    DB 10010001B
+    DB 10010001B
+    DB 10010001B  
+    DB 10010001B
+    DB 10010001B 
+    DB 01110010B  
+    
+    CODE ENDS
+END
+   

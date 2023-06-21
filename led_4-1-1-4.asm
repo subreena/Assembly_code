@@ -1,0 +1,48 @@
+CODE SEGMENT
+    ASSUME CS:CODE,DS:CODE,ES:CODE,SS:CODE
+    
+    PPIC_C EQU 1FH
+    PPIC EQU 1CH
+    PPIB EQU 1DH
+    PPIA EQU 19H
+    
+    ORG 1000H
+    
+    MOV AL,80H
+    OUT PPIC_C,AL
+    
+    MOV AL,11111111B
+    OUT PPIA,AL
+     
+    L1:
+    MOV AL,00001000B
+    L2:
+    OUT PPIB,AL
+    CALL DELAY 
+    ROR AL, 1
+    TEST AL,00000000B
+    JZ L2
+    JMP L3
+    
+    L3:
+    MOV AL, 00000001B
+    OUT PPIB,AL
+    CALL DELAY
+    ROL AL,1
+    TEST AL,00010000B 
+    JZ L3
+    JMP L1
+    
+    
+    
+    DELAY:
+    MOV CX,0FFFFH
+    TIMER: 
+    NOP
+    NOP
+    NOP
+    NOP
+    LOOP TIMER
+    RET
+    CODE ENDS
+END

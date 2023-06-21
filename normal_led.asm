@@ -1,0 +1,36 @@
+CODE SEGMENT
+    ASSUME CS:CODE,DS:CODE,ES:CODE,SS:CODE
+    
+    PPIC_C EQU 1FH
+    PPIC EQU 1DH
+    PPIB EQU 1BH
+    PPIA EQU 19H
+    
+    ORG 1000H
+    
+    MOV AL,80H
+    OUT PPIC_C,AL
+    
+    MOV AL,11111111B
+    OUT PPIA,AL        
+    
+    L1:
+    MOV AL,00001000B
+    OUT PPIB,AL
+    CALL TIMER  
+    MOV AL,00000000B
+    OUT PPIB,AL
+    CALL TIMER
+    JMP L1
+    
+    TIMER: MOV CX,0FFFFH
+    TIME: 
+    NOP
+    NOP
+    NOP
+    NOP
+    LOOP TIME
+    RET
+    
+    CODE ENDS
+END
